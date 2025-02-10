@@ -1,0 +1,5 @@
+This is a c++20 lock-free cpp impl lib.
+
+Impl only with x86 (x64 to be exact) instruction and cpu behaviour in mind.
+
+Impl design and ideas comes from the book _Shared-Memory Synchronization_.
