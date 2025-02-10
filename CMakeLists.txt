@@ -32,9 +32,23 @@ add_executable(treiber_stack
     treiber_stack.cpp
 )
 
+# Create treiber_stack tests
+add_executable(treiber_stack_tests
+    treiber_stack_test.cpp
+)
+
 # Link atomic library to treiber_stack
 target_link_libraries(treiber_stack
     PRIVATE atomic_lib
+)
+
+# Link libraries to treiber_stack_tests
+target_link_libraries(treiber_stack_tests
+    PRIVATE
+    atomic_lib
+    GTest::GTest
+    GTest::Main
+    Threads::Threads
 )
 
 # Add compiler flags for threading support
@@ -45,4 +59,5 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # Enable testing
 enable_testing()
-add_test(NAME atomic_tests COMMAND atomic_tests) 
+add_test(NAME atomic_tests COMMAND atomic_tests)
+add_test(NAME treiber_stack_tests COMMAND treiber_stack_tests) 

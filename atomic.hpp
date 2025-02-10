@@ -8,6 +8,9 @@
 struct alignas(16) uint128_t {
     uint64_t lower;  // Least significant bits
     uint64_t upper;  // Most significant bits
+
+    constexpr uint128_t(): lower(0), upper(0) {}
+    constexpr uint128_t(uint64_t lower, uint64_t upper): lower(lower), upper(upper) {};
 };
 
 // Forward declaration of the specialized atomic implementation
