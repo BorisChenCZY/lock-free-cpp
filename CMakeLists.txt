@@ -10,10 +10,10 @@ find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 
 # Add compiler flags for threading support
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++20")
 
 # Enable optimizations in Release mode
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -std=c++20")
 
 # Enable testing
 enable_testing()

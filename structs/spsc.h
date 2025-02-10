@@ -23,28 +23,25 @@
 #include <array>
 #include <utility>
 
+// can use std::hardware_destructive_interference_size in #include<new> if it is supported
+#define CACHE_LINE_SIZE 64
+
 /** this is a spsc ring buffer, with a fixed size.
  * @tparam T: must be default constructable
+ * @tparam N: size of the ring buffer. Actual capacity would be N - 1 as we'd like to reserve one slot
  * we're using two atomic variable to manage the states of this ring buffer.
  * @note m_start is able to be larger then m_end (as it is ring buffer)
  * @note we'd like to reserve one slot, to differenciate if the queue is empty or full. 
  *       if the size is already N-1, we'd consider it's full.
 */
 template <typename T, size_t N>
+    requires requires {std::is_default_constructible_v<T> && N > 1;}
 struct RingBuffer{
-
-static_assert(N > 1, "Buffer size must be greater than 1");
-static_assert(std::is_default_constructible_v<T>, 
-              "T must be default constructible");
-
 private:
     std::array<T, N> m_arr;
 
-    std::atomic<size_t> m_end {0}; // next slot to push. Update by the writer thread.
-    std::atomic<size_t> m_start {0}; // next slot to pop. Updated by the reader thread.
-
-
-
+    alignas(CACHE_LINE_SIZE) std::atomic<size_t> m_end {0}; // next slot to push. Update by the writer thread.
+    alignas(CACHE_LINE_SIZE) std::atomic<size_t> m_start {0}; // next slot to pop. Updated by the reader thread.
 
     // next will return the next slot according to prev slot. (so that access to m_arr is always correct)
     // @param prev: prev slot
