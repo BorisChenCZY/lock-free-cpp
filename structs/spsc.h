@@ -103,7 +103,7 @@ public:
 
         // now we have at least one slot to use
 
-        auto val = m_arr[to_pop];
+        auto val = std::move(m_arr[to_pop]);
         m_start.store(next(to_pop), std::memory_order::release);
 
         return val;
